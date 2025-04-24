@@ -1,11 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "../pages//registerForm.module";
 
 
 body {
-    background: #e3e3e3;
-    color: rgb(0, 0, 0);
+    background: #1f2732;
+    color: #ffffff;
     scroll-behavior: smooth;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     font-size: 1.4em;
