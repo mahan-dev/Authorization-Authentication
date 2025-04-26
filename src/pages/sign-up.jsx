@@ -4,6 +4,7 @@ import styles from "./registerForm.module.css";
 import { Button, Typography } from "@mui/material";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { pageValidation } from "@/helper/pageValidation";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -22,14 +23,10 @@ const SignUp = () => {
     });
   };
 
-  const notificationTimer = async () => {
-    await new Promise((resolver) => setTimeout(resolver, 2000));
-  };
-
   const signUpHandler = async () => {
     if (!form.email || !form.password) {
-      toast.error("Please fill-out all fields");
-      await notificationTimer();
+      toast.error("Please fill-out all fields", { duration: 2000 });
+
       return;
     }
     const res = await axios.post("/api/signup", form);
@@ -38,12 +35,14 @@ const SignUp = () => {
     console.log(data.status);
     const message = data.status;
     if (message === "Success") {
-      toast.success(message);
-      await notificationTimer();
+      toast.success(message, {
+        duration: 2000,
+      });
       router.push("/sign-in");
     } else {
-      toast.error(data.message);
-      await notificationTimer();
+      toast.error(data.message, {
+        duration: 2000,
+      });
     }
   };
 
@@ -83,3 +82,9 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export const getServerSideProps = (context) => {
+  const { token } = context.req.cookies;
+  const secretKey = process.env.SECRET_KEY;
+  return pageValidation(token, secretKey);
+};
