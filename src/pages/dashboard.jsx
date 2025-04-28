@@ -1,7 +1,7 @@
 import { verifyToken } from "@/utils/auth";
 import axios from "axios";
 import { useRouter } from "next/router";
-import DashboardInput from "@/module/dashboardInput";
+import DashboardInput from "@/module/DashboardInput";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@mui/material";
