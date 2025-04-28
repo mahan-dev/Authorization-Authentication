@@ -5,6 +5,7 @@ import { Button, Typography } from "@mui/material";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { pageValidation } from "@/helper/pageValidation";
+import { data } from "autoprefixer";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -24,25 +25,33 @@ const SignUp = () => {
   };
 
   const signUpHandler = async () => {
+    const duration = {
+      duration: 2000,
+    };
     if (!form.email || !form.password) {
       toast.error("Please fill-out all fields", { duration: 2000 });
 
       return;
     }
-    const res = await axios.post("/api/signup", form);
-    const data = await res.data;
-    console.log(data.data);
-    console.log(data.status);
-    const message = data.status;
-    if (message === "Success") {
-      toast.success(message, {
-        duration: 2000,
-      });
-      router.push("/sign-in");
-    } else {
-      toast.error(data.message, {
-        duration: 2000,
-      });
+
+    try {
+      const res = await axios.post("/api/signup", form);
+      const data = await res.data;
+      console.log(data.data);
+      console.log(data.status);
+      const status = data.status;
+      if (status === "Success") {
+        toast.success(status, {
+          duration: 2000,
+        });
+        router.push("/sign-in");
+      } else {
+        toast.error(data.message || "something went wrong", duration);
+      }
+    } catch (error) {
+      const response = error.response?.data.message;
+      console.log(error)
+      toast.error(response || "an error occurred", duration);
     }
   };
 
