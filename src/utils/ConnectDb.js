@@ -3,8 +3,8 @@ const { default: mongoose } = require("mongoose");
 const connectDb = async (res) => {
   const BaseUrl = process.env.MONGO_URI;
   mongoose.set("strictQuery", false);
+  if (mongoose.connections[0].readyState) return;
   try {
-    if (mongoose.connections[0].readyState) return;
     await mongoose.connect(BaseUrl);
     console.log("connect to database");
   } catch {
